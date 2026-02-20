@@ -3,6 +3,7 @@ package com.example.roaster.contollers;
 
 import com.example.roaster.dto.AvailabilityRequest;
 import com.example.roaster.dto.SlotResponse;
+import com.example.roaster.dto.UnavailabilityRequest;
 import com.example.roaster.security.JWTUtil;
 import com.example.roaster.service.RoasterService;
 import io.jsonwebtoken.Claims;
@@ -25,13 +26,9 @@ public class RoasterController {
         this.rse=rse;
         this.jwt=jwt;
     }
-    @GetMapping("/getUser")
-    public String getUser(){
-        return "api hit is successfully";
-    }
-    @PostMapping("/createRules")
 
-    public String createRules(@RequestBody AvailabilityRequest rules, HttpServletRequest request) {
+    @PostMapping("/create/availability/rules")
+    public String createAvailabilityRules(@RequestBody AvailabilityRequest rules, HttpServletRequest request) {
         try {
             System.out.println("controller hit successfully");
             String authHeader = request.getHeader("Authorization");
@@ -58,6 +55,10 @@ public class RoasterController {
         return ResponseEntity.ok(slots);
       }
 
+      @PostMapping("/create/unavailability/rules")
+      public String createUnavailabilityRules(@RequestBody UnavailabilityRequest rules, HttpServletRequest request){
+        return "api hit successfully";
+      }
 
 
 

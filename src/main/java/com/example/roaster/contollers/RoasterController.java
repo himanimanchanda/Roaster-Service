@@ -30,6 +30,7 @@ public class RoasterController {
         return "api hit is successfully";
     }
     @PostMapping("/createRules")
+
     public String createRules(@RequestBody AvailabilityRequest rules, HttpServletRequest request) {
         try {
             System.out.println("controller hit successfully");

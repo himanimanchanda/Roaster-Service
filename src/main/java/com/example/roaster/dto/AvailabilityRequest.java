@@ -11,7 +11,7 @@ import java.util.List;
 @Setter
 public class AvailabilityRequest {
 
-    private Long employeeId;
+    private Long doctorId;
     private List<DayOfWeek> days;
     private LocalTime startTime;
     private LocalTime endTime;

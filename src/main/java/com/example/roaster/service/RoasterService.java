@@ -1,10 +1,13 @@
 package com.example.roaster.service;
 
 import com.example.roaster.dto.SlotResponse;
+import com.example.roaster.dto.UnavailabilityRequest;
+import com.example.roaster.entity.Unavailability;
+import com.example.roaster.repository.UnavailabilityRepository;
 import org.springframework.stereotype.Service;
 import com.example.roaster.dto.AvailabilityRequest;
 import com.example.roaster.entity.Availability;
-import com.example.roaster.repository.RosterRepo;
+import com.example.roaster.repository.AvailaibilityRepository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -15,10 +18,12 @@ import java.util.List;
 @Service
 public class RoasterService {
 
-    private final RosterRepo rp;
+    private final AvailaibilityRepository rp;
+    private final UnavailabilityRepository unp;
 
-    public RoasterService(RosterRepo rp) {
+    public RoasterService(AvailaibilityRepository rp, UnavailabilityRepository unp) {
         this.rp = rp;
+        this.unp= unp;
     }
 
     public String createRulesService(AvailabilityRequest request,Long orgId,Long DocId) {
@@ -47,6 +52,10 @@ public class RoasterService {
         return slots;
     }
     public List<SlotResponse> getSlotsForDoctor(Long orgId,Long docId, LocalDate date) {
+        Unavailability unv=unp.findByDoctorIdAndDateAndOrganizationId(docId, date, orgId).orElse(null);
+        if(unv!=null &&  date.equals(unv.getDate())) {
+            throw new RuntimeException("Doctor is on leave on "+date+" because "+unv.getReason());
+        }
         Availability availability = rp.findByOrganizationIdAndDoctorIdAndDayOfWeek(orgId,docId, date.getDayOfWeek()).orElseThrow(() ->
                 new RuntimeException("doctor not available on this day"));
 
@@ -59,4 +68,23 @@ public class RoasterService {
                  availability.getSlotDurationMin()
          );
     }
+    public String createUnavailabilityRulesService(UnavailabilityRequest rules,long docId,long orgId){
+        for(LocalDate date:rules.getDates()) {
+
+            if(unp.findByDoctorIdAndDateAndOrganizationId(docId, date, orgId).isPresent()) throw new RuntimeException("Leaves already exists");
+            Unavailability unv=unp.findByDoctorIdAndDateAndOrganizationId(docId, date, orgId)
+                    .orElseGet(Unavailability::new);
+
+            unv.setOrganizationId(orgId);
+            unv.setDoctorId(docId);
+            unv.setDate(date);
+            unv.setActive(true);
+            unv.setReason(rules.getReason());
+            unp.save(unv);
+        }
+        return "Leaves added succesfully";
+
+    }
+
 }
+

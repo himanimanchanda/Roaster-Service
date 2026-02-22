@@ -41,13 +41,14 @@ public class RoasterController {
             Long orgId = orgIdNum.longValue();
             Long docId = Long.valueOf(claims.getSubject());
             System.out.println(docId);
-            return rse.createRulesService(rules, orgId, docId);
+            return rse.createRulesService(rules,  orgId, docId);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
-      @PostMapping("/organization/{orgId}/doctor/{docId}/Slots")
+
+      @GetMapping("/organization/{orgId}/doctor/{docId}/Slots")
       public ResponseEntity <List<SlotResponse>>getDoctorSlots(@PathVariable Long docId,@PathVariable Long orgId,
                                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                LocalDate date){
@@ -57,9 +58,17 @@ public class RoasterController {
 
       @PostMapping("/create/unavailability/rules")
       public String createUnavailabilityRules(@RequestBody UnavailabilityRequest rules, HttpServletRequest request){
-        return "api hit successfully";
+        String authHeader=request.getHeader("Authorization");
+        if(authHeader == null || !authHeader.startsWith("Bearer")){
+            throw new RuntimeException("invalid missing token");
+            }
+        String token = authHeader.substring(7);
+          Claims claims = jwt.validateToken(token);
+          Number orgIdNum = (Number) claims.get("orgId");
+          Long orgId = orgIdNum.longValue();
+          Long docId = Long.valueOf(claims.getSubject());
+          System.out.println(docId);
+          return rse.createUnavailabilityRulesService(rules,docId,orgId);
+
       }
-
-
-
 }

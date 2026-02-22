@@ -20,7 +20,7 @@ import org.hibernate.annotations.UpdateTimestamp;
         (
         name = "availability",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"doctor_id", "day_of_week"})
+                @UniqueConstraint(columnNames = {"doctor_id", "day_of_week","organization_id"})
         }
 )
 public class Availability {

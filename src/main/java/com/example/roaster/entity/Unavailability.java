@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -15,9 +16,9 @@ import java.time.LocalTime;
 @Entity
 @Table
         (
-                name = "availability",
+                name = "Unavailability",
                 uniqueConstraints = {
-                        @UniqueConstraint(columnNames = {"doctor_id", "day_of_week"})
+                        @UniqueConstraint(columnNames = {"doctor_id", "date","organization_id"})
                 }
         )
 public class Unavailability {
@@ -32,9 +33,8 @@ public class Unavailability {
     @Column(name = "organization_id", nullable = false)
     private Long organizationId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "day_of_week", nullable = false)
-    private DayOfWeek dayOfWeek;
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
 
     @Column(name = "start_time")
     private LocalTime startTime;
@@ -47,6 +47,7 @@ public class Unavailability {
 
     @Column(name = "reason")
     private String reason;
+//    LEAVE ,SURGERY, EMERGENCY
 
     @CreationTimestamp
     private LocalDateTime createdAt;

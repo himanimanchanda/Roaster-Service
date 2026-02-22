@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 @Getter
@@ -12,8 +13,7 @@ import java.util.List;
 @Data
 public class UnavailabilityRequest {
 
-        private Long doctorId;
-        private List<DayOfWeek> days;
+        private List<LocalDate> dates;
         private LocalTime startTime;
         private LocalTime endTime;
         private String reason;

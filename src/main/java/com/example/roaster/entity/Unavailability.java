@@ -16,7 +16,7 @@ import java.time.LocalTime;
 @Entity
 @Table
         (
-                name = "Unavailability",
+                name = "unavailability",
                 uniqueConstraints = {
                         @UniqueConstraint(columnNames = {"doctor_id", "date","organization_id"})
                 }

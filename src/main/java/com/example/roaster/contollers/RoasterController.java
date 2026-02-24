@@ -52,6 +52,9 @@ public class RoasterController {
       public ResponseEntity <List<SlotResponse>>getDoctorSlots(@PathVariable Long docId,@PathVariable Long orgId,
                                                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
                                                                LocalDate date){
+          if (date.isBefore(LocalDate.now())) {
+              throw new IllegalArgumentException("Date must be today or a future date");
+          }
         List<SlotResponse> slots =rse.getSlotsForDoctor(orgId,docId,date);
         return ResponseEntity.ok(slots);
       }

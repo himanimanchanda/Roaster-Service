@@ -74,6 +74,11 @@ public class RoasterService {
             if(unp.findByDoctorIdAndDateAndOrganizationId(docId, date, orgId).isPresent()) throw new RuntimeException("Leaves already exists");
             Unavailability unv=unp.findByDoctorIdAndDateAndOrganizationId(docId, date, orgId)
                     .orElseGet(Unavailability::new);
+            if (date.isBefore(LocalDate.now())) {
+                throw new IllegalArgumentException("Leaves can be applied for future dates only");
+            }
+            Availability availability = rp.findByOrganizationIdAndDoctorIdAndDayOfWeek(orgId,docId, date.getDayOfWeek()).orElseThrow(() ->
+                    new RuntimeException("you cant add leaves on "+ date +" because you don't sit here on " + date.getDayOfWeek()));
 
             unv.setOrganizationId(orgId);
             unv.setDoctorId(docId);
@@ -82,7 +87,7 @@ public class RoasterService {
             unv.setReason(rules.getReason());
             unp.save(unv);
         }
-        return "Leaves added succesfully";
+        return "Leaves added successfully";
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.roaster.entity;
+package com.example.roster.entity;
 
 public enum Role {
     ADMIN,

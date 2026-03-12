@@ -1,4 +1,4 @@
-package com.example.roaster.entity;
+package com.example.roster.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -43,9 +43,9 @@ public class Unavailability {
     @Column(name = "is_active")
     private Boolean active = true;
 
+//  LEAVE ,SURGERY, EMERGENCY
     @Column(name = "reason")
     private String reason;
-//    LEAVE ,SURGERY, EMERGENCY
 
     @CreationTimestamp
     private LocalDateTime createdAt;
@@ -53,7 +53,7 @@ public class Unavailability {
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
-    // 🔹 REQUIRED BY JPA
+    // REQUIRED BY JPA
     public Unavailability() {
     }
 

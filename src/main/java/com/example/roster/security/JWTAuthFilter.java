@@ -1,4 +1,4 @@
-package com.example.roaster.security;
+package com.example.roster.security;
 
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
@@ -37,5 +37,11 @@ public class JWTAuthFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest req) {
+        String path=req.getRequestURI();
+        System.out.println(path);
+        return path.startsWith("/api/roster/user");
     }
 }

@@ -1,4 +1,4 @@
-package com.example.roaster.dto;
+package com.example.roster.dto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +17,5 @@ public class AvailabilityRequest {
     private LocalTime endTime;
     private Integer slotDurationMinutes;
 
-    // getters & setters
 }
 

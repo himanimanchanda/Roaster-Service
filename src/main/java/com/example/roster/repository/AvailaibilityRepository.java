@@ -1,6 +1,6 @@
-package com.example.roaster.repository;
+package com.example.roster.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.example.roaster.entity.Availability;
+import com.example.roster.entity.Availability;
 
 import java.time.DayOfWeek;
 import java.util.Optional;

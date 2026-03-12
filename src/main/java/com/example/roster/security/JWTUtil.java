@@ -1,9 +1,9 @@
-package com.example.roaster.security;
+package com.example.roster.security;
 
 import org.springframework.stereotype.Component;
 
-import com.example.roaster.config.JWTConfig;
-import com.example.roaster.entity.Role;
+import com.example.roster.config.JWTConfig;
+import com.example.roster.entity.Role;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

@@ -1,10 +1,9 @@
-package com.example.roaster.dto;
+package com.example.roster.dto;
 
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
@@ -17,7 +16,5 @@ public class UnavailabilityRequest {
         private LocalTime startTime;
         private LocalTime endTime;
         private String reason;
-
-        // getters & setters
 
 }

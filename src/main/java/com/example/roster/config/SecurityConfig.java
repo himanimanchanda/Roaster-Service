@@ -1,6 +1,6 @@
-package com.example.roaster.config;
+package com.example.roster.config;
 
-import com.example.roaster.security.JWTAuthFilter;
+import com.example.roster.security.JWTAuthFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,7 +23,10 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/roaster/create/**").hasRole("DOCTOR")
+                        .requestMatchers("/api/roster/doctor/**").hasRole("DOCTOR")
+                        .requestMatchers("/api/roster/user/**").permitAll()
+//                        .requestMatchers("api/roster/test-feign/**").permitAll()
+
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

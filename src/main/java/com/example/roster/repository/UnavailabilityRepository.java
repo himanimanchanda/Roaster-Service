@@ -9,7 +9,7 @@ import com.example.roster.entity.Unavailability;
 
 public interface UnavailabilityRepository extends JpaRepository<Unavailability,Long> {
 
-    List<Unavailability> findByDoctorIdAndDateAndOrganizationId(
+   Optional<Unavailability> findByDoctorIdAndDateAndOrganizationId(
             Long doctorId,
             LocalDate date,
             Long organizationId

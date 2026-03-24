@@ -24,11 +24,12 @@ public class DoctorRosterServieImpl implements DoctorRosterService {
     private final AvailaibilityRepository availabilityRepository;
     private final UnavailabilityRepository unavailabilityRepository;
     private final JWTUtil jwtUtil;
-    @Override
-    public String createRulesService(AvailabilityRequest request, HttpServletRequest httpRequest) {
 
-        Long orgId = getOrgIdFromToken(httpRequest);
-        Long docId = getDocIdFromToken(httpRequest);
+    @Override
+    public String createRulesService(AvailabilityRequest request, HttpServletRequest httprequest) {
+
+        Long orgId = (Long) httprequest.getAttribute("orgId");
+        Long docId = (Long) httprequest.getAttribute("userId");
 
         for (DayOfWeek day : request.getDays()) {
             Availability availability = availabilityRepository
@@ -54,8 +55,8 @@ public class DoctorRosterServieImpl implements DoctorRosterService {
     public String createUnavailabilityRulesService(UnavailabilityRequest request,
                                                    HttpServletRequest httpRequest) {
 
-        Long orgId = getOrgIdFromToken(httpRequest);
-        Long docId = getDocIdFromToken(httpRequest);
+        Long orgId = (Long) httpRequest.getAttribute("orgId");
+        Long docId = (Long) httpRequest.getAttribute("userId");
 
         for (LocalDate date : request.getDates()) {
 
@@ -90,19 +91,20 @@ public class DoctorRosterServieImpl implements DoctorRosterService {
         }
         return "Unavailability added successfully";
     }
-
-
-
-
-
-    private Long getOrgIdFromToken(HttpServletRequest request) {
-        String token = request.getHeader("Authorization").substring(7);
-        return ((Number) jwtUtil.validateToken(token).get("orgId")).longValue();
-    }
-
-    private Long getDocIdFromToken(HttpServletRequest request) {
-        String token = request.getHeader("Authorization").substring(7);
-        return Long.valueOf(jwtUtil.validateToken(token).getSubject());
-    }
 }
+
+
+
+
+
+//    private Long getOrgIdFromToken(HttpServletRequest request) {
+//        String token = request.getHeader("Authorization").substring(7);
+//        return ((Number) jwtUtil.validateToken(token).get("orgId")).longValue();
+//    }
+//
+//    private Long getDocIdFromToken(HttpServletRequest request) {
+//        String token = request.getHeader("Authorization").substring(7);
+//        return Long.valueOf(jwtUtil.validateToken(token).getSubject());
+//    }
+//}
 

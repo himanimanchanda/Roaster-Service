@@ -39,6 +39,7 @@ public List<SlotResponse> getBookedSlots(
         @RequestParam Long doctorId,
         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
 ){
+
     return rosterservice.getBookedSlots(orgId, doctorId, date.toString());
 }
 }

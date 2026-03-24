@@ -18,10 +18,7 @@ import org.springframework.stereotype.Service;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +37,8 @@ public class RosterServiceImpl implements RosterService {
                 .findByOrganizationIdAndDoctorIdAndDayOfWeek(orgId, docId, date.getDayOfWeek())
                 .orElseThrow(() -> new RuntimeException(
                         "Doctor not available on " + date.getDayOfWeek()));
-
+        Optional<Unavailability> unv=unavailabilityRepository.findByDoctorIdAndDateAndOrganizationId(docId,date,orgId);
+        if(unv.isPresent()) throw new RuntimeException("Doctor is on leave");
 
         List<SlotResponse> generatedSlots = generateSlots(  orgId, docId, date, availability.getStartTime(),
                 availability.getEndTime(), availability.getSlotDurationMin());
@@ -65,11 +63,22 @@ public class RosterServiceImpl implements RosterService {
     private List<SlotResponse> generateSlots(Long orgId,  Long docId,  LocalDate date, LocalTime start, LocalTime end,int duration) {
         List<SlotResponse> slots = new ArrayList<>();
         LocalTime current = start;
-
+        LocalDate today = LocalDate.now();
+        LocalTime currentTime = LocalTime.now();
+        boolean isToday = date.equals(today);
         while (!current.plusMinutes(duration).isAfter(end)) {
-            slots.add(new SlotResponse(  docId,  orgId,date,current,current.plusMinutes(duration)));
+
+            // If the requested date is today, only add the slot if it starts AFTER the current time
+            if (!isToday || current.isAfter(currentTime)) {
+                slots.add(new SlotResponse(docId, orgId, date, current, current.plusMinutes(duration)));
+            }
+
             current = current.plusMinutes(duration);
         }
+//        while (!current.plusMinutes(duration).isAfter(end)) {
+//            slots.add(new SlotResponse(  docId,  orgId,date,current,current.plusMinutes(duration)));
+//            current = current.plusMinutes(duration);
+//        }
         return slots;
     }
 
